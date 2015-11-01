@@ -1,0 +1,12 @@
+<%= current_user.email %>
+<h3>粉丝100</h3>
+<h3>关注100</h3>
+
+<ul>
+  <% @users.each do |user| %>
+    <li>
+      <%= user.email %>
+      <%= link_to "关注" %>
+    </li>
+  <% end %>
+</ul>
