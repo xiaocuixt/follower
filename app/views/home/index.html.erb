@@ -38,18 +38,19 @@
 </ul>
 
 <div class="list">
-  <% if current_user.microposts.any? %>
-    <h3>Microposts (<%= current_user.microposts.count %>)</h3>
-    <ol class="microposts">
-      <% current_user.microposts.each do |micropost|%>
+  <% if @microposts.any? %>
+    <h3>Microposts (<%= @microposts.count %>)</h3>
+    <ul class="microposts">
+      <% @microposts.each do |micropost|%>
         <li>
+          <%= micropost.user.email %>
           <%= micropost.content%>
           <% if micropost.user == current_user %>
             <%= link_to "delete", micropost, method: :delete, data: { confirm: "You sure?" },title: micropost.content %>
           <% end %>
         </li>
       <% end %>
-    </ol>
+    </ul>
   <% end %>
 </div>
 <br>
