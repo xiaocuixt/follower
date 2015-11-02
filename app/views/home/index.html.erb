@@ -1,12 +1,35 @@
 <%= current_user.email %>
-<h3>粉丝100</h3>
-<h3>关注100</h3>
+<div class="stats">
+  <a href="<%= following_user_path(current_user) %>">
+    <strong id="following" class="stat">
+      <%= current_user.followed_users.count %>
+    </strong>
+    关注
+  </a>
+  <a href="<%= followers_user_path(current_user) %>">
+    <strong id="followers" class="stat">
+      <%= current_user.followers.count %>
+    </strong>
+    粉丝
+</a> </div>
 
 <ul>
   <% @users.each do |user| %>
     <li>
-      <%= user.email %>
-      <%= link_to "关注" %>
+      <span><%= user.email%></span>
+      <% if current_user.following?(user) %>
+        <%= form_for(current_user.relationships.find_by(followed_id: user),
+                   html: { method: :delete }) do |f| %>
+          <%= f.submit "Unfollow", class: "btn btn-large" %>
+        <% end %>
+      <% else %>
+        <%= form_for(current_user.relationships.build(followed_id: user.id)) do |f| %>
+          <div><%= f.hidden_field :followed_id %></div>
+          <%= f.submit "Follow", class: "btn btn-large btn-primary" %>
+        <% end %>
+      <% end %>
     </li>
   <% end %>
 </ul>
+
+<%= link_to "退出", destroy_user_session_path, method: :delete%>
